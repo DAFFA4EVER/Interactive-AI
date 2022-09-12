@@ -3,17 +3,18 @@ import os
 import shutil
 
 class VideoCapture:
+
     def record(name):
         capture = cv2.VideoCapture(0)
         fourcc = cv2.VideoWriter_fourcc('X','V','I','D')
-        path = f'Interactive Test/vidcap/object_{name.lower()}'
+        path = f'Interactive Test/video/{name.lower()}'
         try: 
             os.mkdir(path) 
         except OSError as error: 
             shutil.rmtree(path)
             os.mkdir(path) 
         
-        path = f'Interactive Test/vidcap/object_{name.lower()}/data.avi'
+        path = f'Interactive Test/video/{name.lower()}/data.avi'
         videoWriter = cv2.VideoWriter(path, fourcc, 30.0, (640,480))
 
         while (True):
@@ -35,8 +36,8 @@ class VideoCapture:
     def vid2frame(name):
         
         # Opens the Video file
-        path_vid = f'Interactive Test/vidcap/object_{name}/data.avi'
-        path_frame = f'Interactive Test/vidcap/object_{name.lower()}/frame/'
+        path_vid = f'Interactive Test/video/{name}/data.avi'
+        path_frame = f'Interactive Test/frame_data/{name.lower()}/'
         try: 
             os.mkdir(path_frame) 
         except OSError as error: 
@@ -48,7 +49,8 @@ class VideoCapture:
             ret, frame = cap.read()
             if ret == False:
                 break
-            cv2.imwrite(path_frame + 'frame'+str(i)+'.jpg', cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY))
+            cv2.imwrite(path_frame + f'{name.lower()}'+str(i)+'.jpg')
+            #cv2.imwrite(path_frame + f'{name.lower()}'+str(i)+'.jpg', cv2.resize(frame, (224,224)))
             i+=1
         
         cap.release()
