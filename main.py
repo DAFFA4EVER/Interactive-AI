@@ -1,10 +1,10 @@
-
 from vidcam import VideoCapture
 import os
-import numpy as np
 from preprocessing import object_preprocessing as op
-from keras import backend
 from neural_network import neural_network_engine as nne
+
+frame_data = r'D:/Kuliah Telkom University/Python/TCM/Learn/Neural Network/Interactive Test/frame_data'
+default_path = r'D:/Kuliah Telkom University/Python/TCM/Learn/Neural Network/Interactive Test'
 
 while(True):
     flag = input("Add new object?(Yes/No) ")
@@ -14,17 +14,17 @@ while(True):
         flag = input("Add new object?(Yes/No) ")
 
     object_name = input("Input your object name : ")
-    VideoCapture.record(object_name)
-    count_frame = VideoCapture.vid2frame(object_name)
+    VideoCapture.record(object_name, default_path)
+    count_frame = VideoCapture.vid2frame(object_name, default_path)
 
     if count_frame < 300:
         print(f"Not enough frame data to process!!! Frame Count : {count_frame} Needed : 300")
-        VideoCapture.abandon(object_name)
+        VideoCapture.abandon(object_name, default_path)
     else:
         print(f"{object_name} has been created!!!")
 
-frame_data = r'Interactive Test/frame_data'
-default_path = r'Interactive Test'
+frame_data = r'D:/Kuliah Telkom University/Python/TCM/Learn/Neural Network/Interactive Test/frame_data'
+default_path = r'D:/Kuliah Telkom University/Python/TCM/Learn/Neural Network/Interactive Test'
 available_object = os.listdir(frame_data)
 print("\n[---Saved Object---]")
 for i in range(len(available_object)):
