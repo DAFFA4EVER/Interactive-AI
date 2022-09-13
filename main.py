@@ -2,9 +2,10 @@ from vidcam import VideoCapture
 import os
 from preprocessing import object_preprocessing as op
 from neural_network import neural_network_engine as nne
+import pathlib
 
-frame_data = r'D:/Kuliah Telkom University/Python/TCM/Learn/Neural Network/Interactive Test/frame_data'
-default_path = r'D:/Kuliah Telkom University/Python/TCM/Learn/Neural Network/Interactive Test'
+frame_data = f'{pathlib.Path().resolve()}/frame_data'
+default_path = f'{pathlib.Path().resolve()}'
 
 while(True):
     flag = input("Add new object?(Yes/No) ")
@@ -23,8 +24,7 @@ while(True):
     else:
         print(f"{object_name} has been created!!!")
 
-frame_data = r'D:/Kuliah Telkom University/Python/TCM/Learn/Neural Network/Interactive Test/frame_data'
-default_path = r'D:/Kuliah Telkom University/Python/TCM/Learn/Neural Network/Interactive Test'
+
 available_object = os.listdir(frame_data)
 print("\n[---Saved Object---]")
 for i in range(len(available_object)):
