@@ -137,6 +137,9 @@ class object_preprocessing:
                         x=pad_res
                         h=min_res
                         w=min_res
+                        if(frame_shape[0] > frame_shape[1]): # portrait
+                            y=pad_res - pad_res//2 # portrait face usually top
+                            x=0
                         img = img[y:y+h, x:x+w]
 
                     img = cv2.resize(img, (img_height, img_weight))
@@ -171,6 +174,9 @@ class object_preprocessing:
                     x=pad_res
                     h=min_res
                     w=min_res
+                    if(frame_shape[0] > frame_shape[1]): # portrait
+                        y=pad_res - pad_res//2 # portrait face usually top
+                        x=0
                     img = img[y:y+h, x:x+w]
                     
                 img = cv2.resize(img, (img_height, img_weight))

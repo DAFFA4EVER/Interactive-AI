@@ -26,12 +26,13 @@ class neural_network_engine:
         self.model.add(Dropout(rate=0.5))
         self.model.add(Dense(units=class_num, activation='softmax'))
         self.model.compile(optimizer=SGD(lr=0.01), loss='categorical_crossentropy', metrics=['accuracy'])
-        self.batch_size=32
         self.model_path = f'{path}/saved_model'
+        self.pred_path = f'{path}/predict_target'
         self.n_class = class_num
 
-    def train(self, x_train, y_train, x_val, y_val):
-        self.model.fit(x=x_train, y=y_train, epochs=10, batch_size=self.batch_size, validation_data=(x_val, y_val))
+    def train(self, x_train, y_train, x_val, y_val, ephochs_total, batch_size):
+        self.model.fit(x=x_train, y=y_train, epochs=ephochs_total, batch_size=batch_size, validation_data=(x_val, y_val))
+        self.batch_size = batch_size
     
     def model_summary(self):
         print(self.model.summary())
@@ -44,8 +45,28 @@ class neural_network_engine:
         prediction = self.model.predict(pred_data, batch_size=self.batch_size)
         prediction = np.argmax(prediction, axis=-1)
         print('[Prediction Result]')
-        for i in range(len(prediction)):
-            print(f"{pred_filename[i]} => {labels_name[prediction[i]]}")
+        preview_path = self.pred_path
+        for i in range(len(pred_filename)):
+            img = cv2.imread(f"{preview_path}/{pred_filename[i]}")
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            frame_shape = img.shape[:2]
+            if(frame_shape[0] != frame_shape[1]): # to make it square
+                min_res = (min(frame_shape))
+                max_res = (max(frame_shape))
+                pad_res = (max_res-min_res)//2
+                y=0
+                x=pad_res
+                h=min_res
+                w=min_res
+                if(frame_shape[0] > frame_shape[1]): # portrait
+                    y=pad_res - pad_res//2 # portrait face usually top
+                    x=0
+                img = img[y:y+h, x:x+w]
+            plt.imshow(img)
+            plt.title(f"{labels_name[prediction[i]]}")
+            plt.axis('off')
+            plt.show()
+        
 
     def confusion_matrix(self, x_data, y_data):
         # Get prediction

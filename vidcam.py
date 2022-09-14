@@ -91,3 +91,9 @@ class VideoCapture:
     def abandon(name, dir_path):
         path = f'{dir_path}/video/object_{name.lower()}'
         shutil.rmtree(path)
+    
+    def vidfold_2frame(self, dir_path):
+        available_video = os.listdir(f"{dir_path}/video")
+        print(available_video)
+        for i in available_video:
+            self.vid2frame(i, dir_path)
